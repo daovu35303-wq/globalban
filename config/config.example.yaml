@@ -1,0 +1,12 @@
+{
+  "failure_threshold": 5,
+  "correlation_window_seconds": 300,
+  "max_actions_per_hour": 3,
+  "allowlist": ["192.0.2.0/24"],
+  "baseline_path": "~/.globalban/baseline.json",
+  "windows_baseline_path": "~/.globalban/windows-baseline.json",
+  "baseline_warmup_events": 20,
+  "windows_event_channels": ["Security"],
+  "dry_run": true,
+  "execution_enabled": false
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Events xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <Event>
+    <System>
+      <Provider Name="Microsoft-Windows-Security-Auditing"/>
+      <Computer>fixture-host</Computer>
+      <EventID>4625</EventID>
+      <TimeCreated SystemTime="2025-01-02T03:04:00.000Z"/>
+    </System>
+    <EventData>
+      <Data Name="TargetUserName">fixture-user-a</Data>
+      <Data Name="IpAddress">192.0.2.10</Data>
+    </EventData>
+  </Event>
+  <Event>
+    <System>
+      <Provider Name="Microsoft-Windows-Security-Auditing"/>
+      <Computer>fixture-host</Computer>
+      <EventID>4625</EventID>
+      <TimeCreated SystemTime="2025-01-02T03:04:10.000Z"/>
+    </System>
+    <EventData>
+      <Data Name="TargetUserName">fixture-user-b</Data>
+      <Data Name="IpAddress">192.0.2.10</Data>
+    </EventData>
+  </Event>
+  <Event>
+    <System>
+      <Provider Name="Microsoft-Windows-Security-Auditing"/>
+      <Computer>fixture-host</Computer>
+      <EventID>4624</EventID>
+      <TimeCreated SystemTime="2025-01-02T03:05:00.000Z"/>
+    </System>
+    <EventData>
+      <Data Name="TargetUserName">fixture-user-c</Data>
+      <Data Name="IpAddress">198.51.100.20</Data>
+    </EventData>
+  </Event>
+</Events>

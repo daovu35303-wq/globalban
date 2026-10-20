@@ -1,0 +1,1 @@
+"""Notification interfaces are intentionally local unless explicitly configured."""

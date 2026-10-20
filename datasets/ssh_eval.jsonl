@@ -1,0 +1,3 @@
+{"event_id":"eval-001","log":"Failed password for guest from 203.0.113.19 port 49820 ssh2","label":"failed_login","source":"synthetic"}
+{"event_id":"eval-002","log":"Accepted password for ops from 192.0.2.88 port 60214 ssh2","label":"successful_login","source":"synthetic"}
+{"event_id":"eval-003","log":"PAM 8 more authentication failures; rhost=198.51.100.64 user=admin","label":"multiple_failed_logins","source":"synthetic"}

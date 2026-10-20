@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "title": "GlobalBan synthetic Windows event fixture manifest",
+  "provenance": "synthetic",
+  "evtx_artifacts_present": false,
+  "notes": [
+    "No binary EVTX file is included or implied by this manifest.",
+    "The XML fixture is fabricated and intended only to test parsing.",
+    "This catalog does not execute Atomic Red Team tests or alter audit policy."
+  ],
+  "cases": [
+    {
+      "case_id": "synthetic-security-4625",
+      "status": "fixture",
+      "source_file": "windows_events.xmll",
+      "expected_windows_event_id": 4625,
+      "expected_event_type": "login_failed"
+    },
+    {
+      "case_id": "synthetic-security-4624",
+      "status": "fixture",
+      "source_file": "windows_events.xmll",
+      "expected_windows_event_id": 4624,
+      "expected_event_type": "login_succeeded"
+    }
+  ]
+}
