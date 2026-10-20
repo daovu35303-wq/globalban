@@ -13,6 +13,8 @@ from pathlib import Path
 
 from globalban.ingestion.tailer import read_windows_event_export
 from globalban.models.events import SecurityEvent
+from globalban.windows import windows_executable_path
+
 logger = logging.getLogger(__name__)
 _CHANNEL_NAME = re.compile(r"^[A-Za-z0-9._/ -]{1,128}$")
 
@@ -100,7 +102,7 @@ def read_windows_events(
     try:
         result = subprocess.run(
             [
-                "powershell.exe",
+                windows_executable_path("powershell.exe"),
                 "-NoProfile",
                 "-NonInteractive",
                 "-Command",

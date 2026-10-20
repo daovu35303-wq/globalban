@@ -11,6 +11,7 @@ from globalban.audit.logger import AuditLogger
 from globalban.config import AppConfig
 from globalban.models.decisions import ActionResult
 from globalban.policy.guard import PolicyGuard
+from globalban.windows import windows_executable_path
 
 
 class BlockIPAction:
@@ -77,23 +78,23 @@ class BlockIPAction:
             self.audit.record("block_denied", {"ip": normalized_ip, "reason": reason})
             return ActionResult("denied", reason)
         rule_name = self._rule_name(normalized_ip)
-        command = [
-            "netsh",
-            "advfirewall",
-            "firewall",
-            "add",
-            "rule",
-            f"name={rule_name}",
-            "dir=in",
-            "action=block",
-            f"remoteip={normalized_ip}",
-            "enable=yes",
-        ]
         self.audit.record(
             "block_intent",
             {"ip": normalized_ip, "evidence_count": evidence_count, "rule_name": rule_name},
         )
         try:
+            command = [
+                windows_executable_path("netsh"),
+                "advfirewall",
+                "firewall",
+                "add",
+                "rule",
+                f"name={rule_name}",
+                "dir=in",
+                "action=block",
+                f"remoteip={normalized_ip}",
+                "enable=yes",
+            ]
             result = subprocess.run(
                 command, capture_output=True, text=True, timeout=30, check=False, shell=False
             )
@@ -143,16 +144,16 @@ class BlockIPAction:
             self.audit.record("rollback_denied", {"ip": normalized_ip, "reason": reason})
             return ActionResult("denied", reason)
         rule_name = self._rule_name(normalized_ip)
-        command = [
-            "netsh",
-            "advfirewall",
-            "firewall",
-            "delete",
-            "rule",
-            f"name={rule_name}",
-        ]
         self.audit.record("rollback_intent", {"ip": normalized_ip, "rule_name": rule_name})
         try:
+            command = [
+                windows_executable_path("netsh"),
+                "advfirewall",
+                "firewall",
+                "delete",
+                "rule",
+                f"name={rule_name}",
+            ]
             result = subprocess.run(
                 command, capture_output=True, text=True, timeout=30, check=False, shell=False
             )

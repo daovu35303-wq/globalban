@@ -31,14 +31,28 @@ class BlockIPTests(unittest.TestCase):
             action = BlockIPAction(config, Path(directory) / "audit.jsonl")
             completed = type("Completed", (), {"returncode": 0, "stderr": ""})()
             with patch("globalban.actions.block_ip.platform.system", return_value="Windows"):
-                with patch(
-                    "globalban.actions.block_ip.subprocess.run", return_value=completed
-                ) as run:
+                with (
+                    patch(
+                        "globalban.actions.block_ip.windows_executable_path",
+                        return_value=r"C:\Windows\System32\netsh.exe",
+                    ),
+                    patch(
+                        "globalban.actions.block_ip.subprocess.run",
+                        return_value=completed,
+                    ) as run,
+                ):
                     result = action.apply("8.8.8.8", 5, approved=True, dry_run=False)
             self.assertEqual(result.status, "applied")
             args, kwargs = run.call_args
             self.assertEqual(
-                args[0][0:5], ["netsh", "advfirewall", "firewall", "add", "rule"]
+                args[0][0:5],
+                [
+                    r"C:\Windows\System32\netsh.exe",
+                    "advfirewall",
+                    "firewall",
+                    "add",
+                    "rule",
+                ],
             )
             self.assertFalse(kwargs["shell"])
 
@@ -55,9 +69,16 @@ class BlockIPTests(unittest.TestCase):
             action = BlockIPAction(config, Path(directory) / "audit.jsonl")
             completed = type("Completed", (), {"returncode": 0, "stderr": ""})()
             with patch("globalban.actions.block_ip.platform.system", return_value="Windows"):
-                with patch(
-                    "globalban.actions.block_ip.subprocess.run", return_value=completed
-                ) as run:
+                with (
+                    patch(
+                        "globalban.actions.block_ip.windows_executable_path",
+                        return_value=r"C:\Windows\System32\netsh.exe",
+                    ),
+                    patch(
+                        "globalban.actions.block_ip.subprocess.run",
+                        return_value=completed,
+                    ) as run,
+                ):
                     applied = action.apply("8.8.8.8", 5, approved=True, dry_run=False)
                     rolled_back = action.rollback("8.8.8.8", approved=True)
             self.assertEqual(applied.status, "applied")
@@ -76,8 +97,15 @@ class BlockIPTests(unittest.TestCase):
             )
             completed = type("Completed", (), {"returncode": 0, "stderr": ""})()
             with patch("globalban.actions.block_ip.platform.system", return_value="Windows"):
-                with patch(
-                    "globalban.actions.block_ip.subprocess.run", return_value=completed
+                with (
+                    patch(
+                        "globalban.actions.block_ip.windows_executable_path",
+                        return_value=r"C:\Windows\System32\netsh.exe",
+                    ),
+                    patch(
+                        "globalban.actions.block_ip.subprocess.run",
+                        return_value=completed,
+                    ),
                 ):
                     first = BlockIPAction(config, audit_path)
                     self.assertEqual(

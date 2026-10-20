@@ -31,14 +31,32 @@ class WindowsSourceTests(unittest.TestCase):
         xml_text = "<Event><System><EventID>4625</EventID></System></Event>"
         encoded = base64.b64encode(xml_text.encode()).decode()
         result = subprocess.CompletedProcess([], 0, stdout=encoded + "\n", stderr="")
-        with patch(
-            "globalban.ingestion.windows_source.subprocess.run", return_value=result
+        with (
+            patch(
+                "globalban.ingestion.windows_source.windows_executable_path",
+                return_value=r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe",
+            ),
+            patch(
+                "globalban.ingestion.windows_source.subprocess.run",
+                return_value=result,
+            ) as run,
         ):
             self.assertEqual(read_windows_events(["Security"]), [xml_text])
+        self.assertEqual(
+            run.call_args.args[0][0],
+            r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe",
+        )
 
         failed = subprocess.CompletedProcess([], 1, stdout="", stderr="access denied")
-        with patch(
-            "globalban.ingestion.windows_source.subprocess.run", return_value=failed
+        with (
+            patch(
+                "globalban.ingestion.windows_source.windows_executable_path",
+                return_value=r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe",
+            ),
+            patch(
+                "globalban.ingestion.windows_source.subprocess.run",
+                return_value=failed,
+            ),
         ):
             with self.assertLogs(
                 "globalban.ingestion.windows_source", level="ERROR"
